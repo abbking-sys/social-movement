@@ -47,11 +47,11 @@ def k_shelll(G, u=None):
     return data
 
 print("milan network 2003")
-G = nx.read_pajek(r'C:\Users\Bill\Desktop\bigater\data\Milan2003.paj')
+G = nx.read_pajek(r'C:\...\Milan2003.paj')
 #print("sawmill_strike network 1997")
-#G = nx.read_pajek(r'C:\Users\Bill\Desktop\bigater\data\sawmill_strike1997.paj')
+#G = nx.read_pajek(r'C:\...\sawmill_strike1997.paj')
 #print("9-11")
-#G = nx.read_pajek(r'C:\Users\Bill\Desktop\bigater\data\N_911.paj')
+#G = nx.read_pajek(r'C:\...\N_911.paj')
 plt.figure(figsize=(15, 15))
 nx.draw(G, with_labels=True,font_size=24,node_color='r',node_size=900)
 plt.show()

@@ -18,7 +18,7 @@ def draw(G, pos, measures, measure_name):
     plt.axis('off')
     plt.show()
 # k-shell value
-def k_shelll(G, u=None):
+def k_shell(G, u=None):
     _G = G.copy()
     data = {}
     ks = 1
@@ -88,7 +88,7 @@ sort_orders = sorted(eiv_centrality.items(), key=lambda x: x[1], reverse=True)
 for i in sort_orders:
 	print(i[0], i[1])
 print("k-shell value")
-kcs = {n:k_shelll(G, n) for n in G.nodes()}
+kcs = {n:k_shell(G, n) for n in G.nodes()}
 #print rank of eigenvector centrality
 sort_orders = sorted(kcs.items(), key=lambda x: x[1], reverse=True)
 for i in sort_orders:

@@ -1,0 +1,102 @@
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+import networkx as nx
+import os  # read file in my computer
+# for Notebook
+#matplotlib inline
+def draw(G, pos, measures, measure_name):
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=250, cmap=plt.cm.plasma,
+                                   node_color=list(measures.values()),
+                                   nodelist=measures.keys())
+    nodes.get_label()
+    nodes.set_norm(mcolors.SymLogNorm(linthresh=0.01, linscale=1, base=10))
+    labels = nx.draw_networkx_labels(G, pos)
+    edges = nx.draw_networkx_edges(G, pos)
+
+    #plt.title(measure_name)
+    plt.colorbar(nodes)
+    plt.axis('off')
+    plt.show()
+# k-shell value
+def k_shelll(G, u=None):
+    _G = G.copy()
+    data = {}
+    ks = 1
+    while _G.nodes():
+        temp = []
+        ns = {n:_G.degree[n] for n in _G.nodes()}
+        kks = min(ns.values())
+        while True:
+            for k, v in ns.items():
+                if v == kks:
+                    temp.append(k)
+                    _G.remove_node(k)
+            ns = {n:_G.degree[n] for n in _G.nodes()}
+            if kks not in ns.values():
+                break
+        data[ks] = temp
+        ks += 1
+    #
+    if u or u == 0:
+        kc = 0
+        for k,v in data.items():
+            if u in v:
+                kc = k
+                break
+        return kc
+    return data
+
+print("milan network 2003")
+G = nx.read_pajek(r'C:\Users\Bill\Desktop\bigater\data\Milan2003.paj')
+#print("sawmill_strike network 1997")
+#G = nx.read_pajek(r'C:\Users\Bill\Desktop\bigater\data\sawmill_strike1997.paj')
+#print("9-11")
+#G = nx.read_pajek(r'C:\Users\Bill\Desktop\bigater\data\N_911.paj')
+plt.figure(figsize=(15, 15))
+nx.draw(G, with_labels=True,font_size=24,node_color='r',node_size=900)
+plt.show()
+#THE SATATTISTICAL PROPERTIES OF THE NETWORKS
+print("number of nodes",G.number_of_nodes())
+print("number of edges",G.number_of_edges())
+print("density of networks",nx.density(G))
+print("average degree",(2*G.number_of_edges())/G.number_of_nodes())
+print("diameter: " ,nx.diameter(G))
+
+#caluate many cetrality
+print("dgree centrality")
+deg_centrality = nx.degree_centrality(G) #dgree centrality
+#print rank of dgree centrality
+sort_orders = sorted(deg_centrality.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
+print("closeness centrality")
+clo_centrality = nx.closeness_centrality(G) #closeness centrality
+#print rank of closeness centrality
+sort_orders = sorted(clo_centrality.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
+print("betweenness centrality")
+bet_centrality = nx.betweenness_centrality_source(G)#betweenness centrality
+#print rank of betweenness centrality
+sort_orders = sorted(bet_centrality.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
+print("eigenvector centrality")
+eiv_centrality=nx.eigenvector_centrality_numpy(G)#eigenvector centrality
+#print rank of eigenvector centrality
+sort_orders = sorted(eiv_centrality.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
+print("k-shell value")
+kcs = {n:k_shelll(G, n) for n in G.nodes()}
+#print rank of eigenvector centrality
+sort_orders = sorted(kcs.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
+print("K-shell mixed eigenvector centrality")#Kc value of the paper
+kec={k: v * eiv_centrality[k] for k, v in kcs.items() if k in eiv_centrality}
+sort_orders = sorted(kec.items(), key=lambda x: x[1], reverse=True)
+for i in sort_orders:
+	print(i[0], i[1])
+pos = nx.spring_layout(G, seed=1500)
+draw(G, pos,kec, 'K-shell mixed eigenvector centrality')

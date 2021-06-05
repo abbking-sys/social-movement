@@ -2,6 +2,7 @@
 This is a part of my paper“Finding key actors on social movement networks through improved k-shell method”  
 The paper have sent out  
 The Repositorie containas data and codes of the paper.when it is publication ,I will attach DOI here.  
+The DOI of the paper is:10.1109/ICMCCE51767.2020.00442
 The data of the paper are 'Milan.paj''sawmill_strike.paj''N_911.paj'  
 The code contans the key improved algorithm of the paper.  
 Have a nice journey here,and happy ervryday!  
